@@ -1,4 +1,5 @@
-﻿using static SOLID_Example.Task3_L_Solid;
+﻿using System.Net.Http.Headers;
+using static SOLID_Example.Task3_L_Solid;
 using static SOLID_Example.Task4_I_Solid;
 
 namespace SOLID_Example
@@ -17,7 +18,69 @@ namespace SOLID_Example
         }
     }
 
+    public class Task5_D_Solid
+    {
+        #region bulb
+        /*
+         * Task: Decouple LightSwitch from the concrete Bulb class using an appropriate abstraction.
+         */
+        public class LightSwitch
+        {
+            private IBulb bulb { get; set; }
+            public void Operate() {
+                // Toggle bulb state
 
+            }
+        }
+
+        public interface IBulb
+        {
+            void TurnOn();
+            void TurnOff();
+
+        }
+        public class Bulb: IBulb
+        {
+            void IBulb.TurnOn()
+            { 
+
+            }
+            void IBulb.TurnOff() 
+            { 
+              
+            }
+        }
+
+
+        #endregion
+
+        #region weather
+        //Task: Refactor the WeatherReporter class so that it doesn&#39;t depend on a specific temperature sensor implementation.
+        public class WeatherReporter
+        {
+            private ISensor sensor { get; set; }
+            public string Report()
+            {
+                return $"Current temperature: { this.sensor.GetTemperature()} ";
+            }
+        }
+
+
+        public interface ISensor
+        {
+            double GetTemperature();
+        }
+        public class TemperatureSensor: ISensor
+        {
+            double ISensor.GetTemperature()
+            {
+                // Return temperature from sensor
+                return 25.0; // dummy value
+            }
+        }
+        #endregion
+
+    }
 
     public class Task4_I_Solid
     {
