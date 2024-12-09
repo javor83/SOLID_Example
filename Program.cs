@@ -1,11 +1,93 @@
-﻿namespace SOLID_Example
+﻿using System.Security.Cryptography.X509Certificates;
+using static SOLID_Example.Task3_L_Solid;
+
+namespace SOLID_Example
 {
     internal class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
+
+            //new Task3_L_Solid().Print(new ElectricEngine());//exception ok !
+            new Task3_L_Solid().Fly(new Bird());
+            new Task3_L_Solid().Fly(new Penguin());
         }
+    }
+
+
+    public class Task3_L_Solid
+    {
+        #region engine
+        /*
+         * Task: Address the violation of LSP in the above inheritance hierarchy.
+         * public class Engine 
+         * {
+            public void Start() 
+            {
+                // Start the engine
+            }
+          }
+        public class ElectricEngine : Engine 
+        {
+            public override void Start() 
+            {
+                throw new Exception(&quot;Electric engines don't start traditionally.&quot;);
+            }
+        }
+         */
+        public void Fly(Bird b)
+        {
+            b.Fly();
+        }
+
+
+        public void Print(Engine k)
+        {
+            k.Start();
+        }
+
+        public class Engine
+        {
+            public virtual void Start()
+            {
+                // Start the engine
+            }
+        }
+        public class ElectricEngine : Engine
+        {
+            public override void Start()
+            {
+                throw new Exception("Electric engines don't start traditionally.");
+            }
+        }
+        #endregion
+
+        #region birds
+        /*
+         * Task: Penguins don&#39;t fly! Modify the class design to adhere to LSP.
+         * public class Bird {
+            public void Fly() {
+            //...
+            }
+            }
+            public class Penguin : Bird { }
+         */
+        public class Bird
+        {
+            public virtual void Fly()
+            {
+                Console.WriteLine("bird flies !");
+            }
+        }
+        public class Penguin : Bird 
+        {
+            public override void Fly()
+            {
+                Console.WriteLine("no flight !");
+            }
+        }
+        #endregion
     }
 
 
@@ -60,10 +142,10 @@
         {
             public string Caption { get; set; }
             private string mSSD = "";
-            public LogFileSSD(string caption,string ssd)
+            public LogFileSSD(string caption, string ssd)
             {
                 this.Caption = caption;
-                this.mSSD  = ssd;
+                this.mSSD = ssd;
             }
 
             void ILoggerFile.Log()
@@ -73,7 +155,6 @@
         }
         //---------------------------------------------------
         #endregion
-
 
         #region  discount
         /*
