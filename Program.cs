@@ -1,5 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using static SOLID_Example.Task3_L_Solid;
+﻿using static SOLID_Example.Task3_L_Solid;
+using static SOLID_Example.Task4_I_Solid;
 
 namespace SOLID_Example
 {
@@ -10,11 +10,92 @@ namespace SOLID_Example
             Console.WriteLine("Hello, World!");
 
             //new Task3_L_Solid().Print(new ElectricEngine());//exception ok !
-            new Task3_L_Solid().Fly(new Bird());
-            new Task3_L_Solid().Fly(new Penguin());
+            //new Task3_L_Solid().Fly(new Bird());
+            //new Task3_L_Solid().Fly(new Penguin());
+            IMachine mm = new TM();
+            mm.Fax();mm.Scan();mm.Print();
         }
     }
 
+
+
+    public class Task4_I_Solid
+    {
+        #region machine
+        /*
+         * Task: Not all machines can print, fax, and scan. Separate these capabilities into individual interfaces.
+         * public interface IMachine {
+            void Print();
+            void Fax();
+            void Scan();
+            }
+         */
+        public interface IFax
+        {
+            void Fax();
+        }
+        public interface IScan
+        {
+            void Scan();
+        }
+       
+
+        public interface IMachine:IFax,IScan
+        {
+            void Print();
+          
+           
+        }
+        public class TM : IMachine
+        {
+            void IFax.Fax()
+            {
+                Console.WriteLine("fax");
+            }
+
+            void IMachine.Print()
+            {
+                Console.WriteLine("print");
+            }
+
+            void IScan.Scan()
+            {
+                Console.WriteLine("Scan");
+            }
+        }
+        #endregion
+        //-----------------------------------
+
+        #region play
+        /*
+         * Task: Some media players might only support play and pause. Refactor the interface to
+           ensure that no player class implements unnecessary methods.
+       public interface IPlayer
+        {
+            void Play();
+            void Pause();
+            void Next();
+            void Previous();
+            void Shuffle();
+        }
+         */
+        #endregion
+        //--------------------------------------
+
+        public interface IPlay
+        {
+            void Play();
+            void Pause();
+        }
+
+        public interface IPosition
+        {
+            void Next();
+            void Previous();
+            void Shuffle();
+        }
+
+    }
 
     public class Task3_L_Solid
     {
