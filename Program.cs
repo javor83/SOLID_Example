@@ -1,0 +1,229 @@
+﻿namespace SOLID_Example
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello, World!");
+        }
+    }
+
+
+    public class Task2_O_Solid
+    {
+        #region logger
+        /*
+         * Task: Refactor the Logger class to allow adding more logging methods in the future without changing the existing code.
+         
+        public class Logger
+        {
+            public void LogToConsole(string message)
+            {
+                Console.WriteLine(message);
+            }
+            public void LogToFile(string message, string filename)
+            {
+                // Code to write message to a file
+            }
+        }
+        */
+
+        public interface ILoggerFile
+        {
+            void Log();
+        }
+
+        public class Logger
+        {
+            public void Log(ILoggerFile log)
+            {
+                log.Log();
+            }
+        }
+
+        public class LogConsole : ILoggerFile
+        {
+            public string Caption { get; set; }
+            public LogConsole(string caption)
+            {
+                this.Caption = caption;
+            }
+
+            void ILoggerFile.Log()
+            {
+                Console.WriteLine(this.Caption);
+            }
+
+        }
+
+        public class LogFileSSD : ILoggerFile
+        {
+            public string Caption { get; set; }
+            private string mSSD = "";
+            public LogFileSSD(string caption,string ssd)
+            {
+                this.Caption = caption;
+                this.mSSD  = ssd;
+            }
+
+            void ILoggerFile.Log()
+            {
+                File.WriteAllText(this.mSSD, this.Caption);
+            }
+        }
+        //---------------------------------------------------
+        #endregion
+
+
+        #region  discount
+        /*
+         * Task: Refactor the DiscountCalculator class so that you can introduce new discount types without modifying existing code.
+         * public class DiscountCalculator 
+         * {
+            public double CalculateDiscount(string type, double price)
+            {
+            if (type == &quot;STUDENT&quot;) {
+            return price * 0.1;
+            } else if (type == &quot;SENIOR&quot;) {
+            return price * 0.2;
+            }
+            return price;
+            }
+            }
+         */
+
+        public class Discounter
+        {
+            public double CalculateDiscount(double price, IDiscount dtype)
+            {
+                return dtype.Value(price);
+            }
+        }
+
+        public interface IDiscount
+        {
+            double Value(double price);
+        }
+
+        public class StudentDiscount : IDiscount
+        {
+            double IDiscount.Value(double price)
+            {
+                return price * 0.1;
+            }
+        }
+
+        public class SeniorDiscount : IDiscount
+        {
+            double IDiscount.Value(double price)
+            {
+                return price * 0.2;
+            }
+        }
+
+        public class DefaultDiscount : IDiscount
+        {
+            double IDiscount.Value(double price)
+            {
+                return price;
+            }
+        }
+        #endregion
+
+    }
+
+
+    /// </summary>
+    public class Task1_S_Solid
+    {
+
+
+        #region invoice
+        /*
+         *  Task: Split the Invoice class so that the database and printing operations are segregated into their respective classes.
+            public class Invoice
+            {
+            public double Amount {get; set;}
+            public string CustomerName {get; set;}
+            // ... other properties
+            public void PrintInvoice() 
+            {
+                // Print invoice
+            }
+            public void SaveInvoice() 
+            {
+                // Save invoice to database
+            }
+            }
+         */
+        public class Invoice
+        {
+            public double Amount { get; set; }
+            public string CustomerName { get; set; }
+        }
+
+        public class PrintInvoice
+        {
+            public void Print(Invoice item)
+            {
+
+            }
+
+        }
+        public class Database_Invoice
+        {
+
+
+            public void SaveInvoice(Invoice item)
+            {
+
+            }
+
+        }
+        //---------------------------------------------------
+        #endregion
+
+        #region book
+        /*
+        Task: Separate the database operations from the Book class, ensuring that each class has a single responsibility.
+        public class Book 
+        {
+            private string Title {get; set;}
+            private string Author {get; set;}
+            // ... other properties
+            public void SaveToDatabase()
+            {
+                  // Save book to the database
+            }
+            public string GetBookSummary() 
+            {
+                  return title + &quot; by &quot; + author;
+            }
+        }
+       */
+        public class Book
+        {
+            private string Title { get; set; }
+            private string Author { get; set; }
+            // ... other properties
+
+            public string GetBookSummary()
+            {
+                return $"{this.Title} - {this.Author}";
+            }
+        }
+
+        public class Database_Book
+        {
+            public void SaveToDatabase(Book item)
+            {
+                // Save book to the database
+            }
+
+        
+
+        }
+        #endregion
+
+    }
+}
